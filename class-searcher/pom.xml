@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>demo</artifactId>
+        <groupId>org.chail</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>class-searcher</artifactId>
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>nexus-releases</id>-->
+<!--            <name>corp nexus-releases</name>-->
+<!--            <url>http://nexus.mchz.com.cn:8081/nexus/content/repositories/releases/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>nexus-snapshot</id>-->
+<!--            <name>corp nexus-snapshot</name>-->
+<!--            <url>http://nexus.mchz.com.cn:8081/nexus/content/repositories/snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>nexus</id>-->
+<!--            <name>Team Nexus Repository</name>-->
+<!--            <url>http://nexus.mchz.com.cn:8081/nexus/content/groups/public</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>daily</updatePolicy>-->
+<!--            </snapshots>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>never</updatePolicy>-->
+<!--            </releases>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>nexus</id>-->
+<!--            <name>Team Nexus Repository</name>-->
+<!--            <url>http://nexus.mchz.com.cn:8081/nexus/content/groups/public</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>daily</updatePolicy>-->
+<!--            </snapshots>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--                <updatePolicy>never</updatePolicy>-->
+<!--            </releases>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
+
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.swt</groupId>
+            <artifactId>org.eclipse.swt.win32.win32.x86</artifactId>
+            <version>4.3</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>${project.artifactId}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                    <shadedArtifactAttached>true</shadedArtifactAttached>
+                    <shadedClassifierName>shaded</shadedClassifierName>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.bluestemsoftware.open.maven.plugin</groupId>
+                <artifactId>launch4j-plugin</artifactId>
+                <version>1.5.0.0</version>
+                <executions>
+                    <!-- GUI exe -->
+                    <execution>
+                        <id>l4j-gui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/ClassSearcher.exe</outfile>
+                            <jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
+                            <errTitle>App Err</errTitle>
+                            <classPath>
+                                <mainClass>org.chail.shell.UIClassSearcher</mainClass>
+                            </classPath>
+                            <icon>ico.ico</icon>
+                            <jre>
+                                <minVersion>1.8.0</minVersion>
+                                <maxVersion>1.9.0</maxVersion>
+                                <initialHeapSize>128</initialHeapSize>
+                                <maxHeapSize>1024</maxHeapSize>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>1.0.0.0</txtFileVersion>
+                                <fileDescription>Desc</fileDescription>
+                                <copyright>C</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>1.0.0.0</txtProductVersion>
+                                <productName>Product</productName>
+                                <internalName>Product</internalName>
+                                <originalFilename>App.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                    <!-- Command-line exe -->
+                    <execution>
+                        <id>l4j-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/ClassSearcher.exe</outfile>
+                            <jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
+                            <errTitle>App Err</errTitle>
+                            <classPath>
+                                <mainClass>org.chail.shell.UIClassSearcher</mainClass>
+                            </classPath>
+                            <icon>ico.ico</icon>
+                            <jre>
+                                <minVersion>1.8.0</minVersion>
+                                <maxVersion>1.9.0</maxVersion>
+                                <initialHeapSize>128</initialHeapSize>
+                                <maxHeapSize>1024</maxHeapSize>
+                            </jre>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+</project>
